@@ -2,6 +2,6 @@
 
 package bolt
 
-func disableHidExclusive(exclusive bool) {
+func disableHidExclusive() {
 	//
 }

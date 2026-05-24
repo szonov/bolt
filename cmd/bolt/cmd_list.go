@@ -7,15 +7,14 @@ import (
 	"github.com/szonov/bolt"
 )
 
-func main() {
-
-	if err := ls(); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
+func cmdList() {
+	if err := cmdListHandler(); err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
 	}
 }
 
-func ls() error {
+func cmdListHandler() error {
 	if err := bolt.Init(); err != nil {
 		return fmt.Errorf("bolt.Init failed: %v", err)
 	}
@@ -29,7 +28,7 @@ func ls() error {
 
 	for _, receiver := range receivers {
 		if err := printReceiverInfo(receiver); err != nil {
-			fmt.Printf("Receiver [%s] failed: %s\n", receiver.Name, err.Error())
+			fmt.Fprintf(os.Stderr, "Receiver [%s] failed: %s\n", receiver.Name, err.Error())
 		}
 	}
 
@@ -60,9 +59,9 @@ func printReceiverInfo(receiver *bolt.Receiver) error {
 		if err != nil {
 			fmt.Printf("-\n")
 			continue
-		} else {
-			fmt.Printf("%s", name)
 		}
+		fmt.Printf("%s", name)
+
 		charge, _, _, err := device.GetBatteryInfo()
 		if err != nil {
 			fmt.Printf(" (battery info error: %v)", err)

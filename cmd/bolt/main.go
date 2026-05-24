@@ -14,6 +14,7 @@ var programName string
 var version = "0.0.1"
 var commands = []Command{
 	{"list", "Display bolt receivers with attached devices"},
+	{"monitor", "Monitor events from bolt receiver"},
 	{"help", "Display this help"},
 	{"version", "Display program version"},
 }
@@ -31,6 +32,8 @@ func main() {
 		cmdVersion()
 	case "list":
 		cmdList()
+	case "monitor":
+		cmdMonitor()
 	default:
 		cmdHelp()
 	}

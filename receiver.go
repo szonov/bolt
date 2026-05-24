@@ -25,7 +25,7 @@ var (
 	ResponseWaitTimeout = 2 * time.Second
 )
 
-type HandlerFunc func([]byte)
+type HandlerFunc func(*Receiver, []byte)
 
 type Packet struct {
 	Data  []byte
@@ -171,7 +171,7 @@ func (c *Receiver) listen() {
 
 		// Логирование только если включено debug, чтобы не тратить ресурсы на fmt
 		if slog.Default().Enabled(context.Background(), slog.LevelDebug) {
-			slog.Debug("R", "<-", debugValue(pkt), "key", key)
+			slog.Debug("R", "<-", debugValue(pkt))
 		}
 
 		c.mu.Lock()
@@ -184,7 +184,7 @@ func (c *Receiver) listen() {
 			default:
 			}
 		} else if c.handler != nil {
-			c.handler(pkt)
+			c.handler(c, pkt)
 		}
 	}
 }
